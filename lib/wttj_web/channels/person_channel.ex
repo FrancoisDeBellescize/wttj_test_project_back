@@ -23,6 +23,19 @@ defmodule WttjWeb.PersonChannel do
     broadcast!(socket, "update_persons", %{persons: WttjWeb.PersonView.render("index.json", %{persons: persons})})
   end
 
+  def handle_in("updatePerson", %{"id" => id}, socket) do
+    person = Person
+    |> Repo.get(id)
+
+    Person.changeset(person, %{"toMeet" => !person.toMeet})
+    |> Repo.update!
+
+    broadcast_update(socket)
+
+    {:noreply, socket}
+  end
+
+
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true
