@@ -33,6 +33,7 @@ defmodule Wttj.Notifications do
       "DELETE" -> Enum.filter(data,  &(&1.id !== id))
     end
 
+    # Sending data to all clients
     WttjWeb.Endpoint.broadcast!("person:lobby", "updated_data", %{ persons: WttjWeb.PersonView.render("index.json", %{persons: updated_data}) })
 
     {:noreply, {pid, ref, channel, updated_data}}
