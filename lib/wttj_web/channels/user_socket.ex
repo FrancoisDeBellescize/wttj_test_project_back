@@ -3,6 +3,7 @@ defmodule WttjWeb.UserSocket do
 
   ## Channels
   # channel "room:*", WttjWeb.RoomChannel
+  channel "person:*", WttjWeb.PersonChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
