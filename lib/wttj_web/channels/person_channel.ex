@@ -22,10 +22,10 @@ defmodule WttjWeb.PersonChannel do
     |> order_by(asc: :position)
     |> Repo.all()
 
-    broadcast!(socket, "updatePerson", %{persons: WttjWeb.PersonView.render("index.json", %{persons: persons})})
+    broadcast!(socket, "updatePersons", %{persons: WttjWeb.PersonView.render("index.json", %{persons: persons})})
   end
 
-  def handle_in("updatePerson", %{"persons" => persons}, socket) do
+  def handle_in("updatePersons", %{"persons" => persons}, socket) do
     Enum.each(persons, fn(person) ->
       tmp = Person
       |> Repo.get(person["id"])
@@ -33,6 +33,23 @@ defmodule WttjWeb.PersonChannel do
       Person.changeset(tmp, person)
       |> Repo.update
     end)
+
+    broadcast_update(socket)
+
+    {:noreply, socket}
+  end
+
+  def handle_in("deletePerson", %{"id" => id}, socket) do
+    Repo.get!(Person, id)
+    |> Repo.delete
+
+    broadcast_update(socket)
+
+    {:noreply, socket}
+  end
+
+  def handle_in("createPerson", %{"name" => name}, socket) do
+    Repo.insert(%Person{name: name})
 
     broadcast_update(socket)
 

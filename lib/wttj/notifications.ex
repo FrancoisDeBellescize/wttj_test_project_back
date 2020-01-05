@@ -32,7 +32,7 @@ defmodule Wttj.Notifications do
       |> order_by(asc: :position)
       |> Repo.all()
 
-      WttjWeb.Endpoint.broadcast!("person:lobby", "updatePerson", %{ persons: WttjWeb.PersonView.render("index.json", %{persons: persons}) })
+      WttjWeb.Endpoint.broadcast!("person:lobby", "updatePersons", %{ persons: WttjWeb.PersonView.render("index.json", %{persons: persons}) })
     end
 
     {:noreply, {pid, ref, channel, data}}
