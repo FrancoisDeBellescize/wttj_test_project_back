@@ -11,9 +11,10 @@ defmodule Wttj.Application do
       # Start the Ecto repository
       Wttj.Repo,
       # Start the endpoint when the application starts
-      WttjWeb.Endpoint
+      WttjWeb.Endpoint,
       # Starts a worker by calling: Wttj.Worker.start_link(arg)
       # {Wttj.Worker, arg},
+      Supervisor.Spec.worker(Wttj.Notifications, ["persons_changes"], id: :persons_changes),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

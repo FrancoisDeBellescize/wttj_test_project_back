@@ -16,3 +16,12 @@ defmodule Wttj.Wttj.Person do
     |> validate_required([:name, :toMeet])
   end
 end
+
+defimpl Poison.Encoder, for: Wttj.Wttj.Person do
+  def encode(%{__struct__: _} = struct, options) do
+    map = struct
+          |> Map.from_struct
+          |> Map.drop([:__meta__, :__struct__])
+    Poison.Encoder.Map.encode(map, options)
+  end
+end
