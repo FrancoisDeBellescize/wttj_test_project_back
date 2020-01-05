@@ -1,5 +1,6 @@
 defmodule WttjWeb.PersonChannel do
   use WttjWeb, :channel
+  import Ecto.Query
   alias Wttj.{Repo, Wttj.Person}
 
   def join("person:lobby", payload, socket) do
@@ -17,18 +18,21 @@ defmodule WttjWeb.PersonChannel do
   end
 
   defp broadcast_update(socket) do
-    persons = Repo.all(Person)
+    persons = Person
+    |> order_by(asc: :position)
+    |> Repo.all()
 
-    # Sending data to all clients
-    broadcast!(socket, "update_persons", %{persons: WttjWeb.PersonView.render("index.json", %{persons: persons})})
+    broadcast!(socket, "updatePerson", %{persons: WttjWeb.PersonView.render("index.json", %{persons: persons})})
   end
 
-  def handle_in("updatePerson", %{"id" => id}, socket) do
-    person = Person
-    |> Repo.get(id)
+  def handle_in("updatePerson", %{"persons" => persons}, socket) do
+    Enum.each(persons, fn(person) ->
+      tmp = Person
+      |> Repo.get(person["id"])
 
-    Person.changeset(person, %{"toMeet" => !person.toMeet})
-    |> Repo.update!
+      Person.changeset(tmp, person)
+      |> Repo.update
+    end)
 
     broadcast_update(socket)
 

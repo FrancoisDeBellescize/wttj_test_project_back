@@ -9,7 +9,8 @@ defmodule WttjWeb.PersonView do
     %{
       id: person.id,
       name: person.name,
-      toMeet: person.toMeet
+      toMeet: person.toMeet,
+      position: person.position
     }
   end
 end
