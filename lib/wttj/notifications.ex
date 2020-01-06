@@ -10,11 +10,8 @@ defmodule Wttj.Notifications do
   end
 
   def init(channel) do
-    pg_config = Application.get_env(:wttj, Wttj.Repo)
-
-    IO.inspect pg_config
-
-    {:ok, pid} = Postgrex.Notifications.start_link(pg_config)
+    {:ok, pid} = Application.get_env(:wttj, Wttj.Repo)
+      |> Postgrex.Notifications.start_link()
     ref = Postgrex.Notifications.listen!(pid, channel)
 
     data = Person |> Repo.all

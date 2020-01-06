@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :wttj, WttjWeb.Endpoint,
-  url: [scheme: "https", host: "wttj-test-project-back", port: 443],
+  url: [scheme: "https", host: "wttj-test-project-back.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Do not print debug messages in production
