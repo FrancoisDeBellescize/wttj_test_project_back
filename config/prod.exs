@@ -11,7 +11,8 @@ use Mix.Config
 # before starting your production server.
 config :wttj, WttjWeb.Endpoint,
   url: [scheme: "https", host: "wttj-test-project-back.herokuapp.com", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]]
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  check_origin: ["https://wttj-test-project-front.herokuapp.com"]
 
 # Do not print debug messages in production
 config :logger, level: :info
